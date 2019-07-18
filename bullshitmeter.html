@@ -3,17 +3,32 @@
 <html lang="nl">
 <head>
     <meta charset="utf-8">
-
     <title>The HTML5 Herald</title>
     <meta content="Bullshitmeter" name="description">
-
-        <link href="bullshitmeter.css?v=1.0" rel="stylesheet">
-
+    <link href="bullshitmeter.css?v=1.0" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+            crossorigin="anonymous">
+    </script>
 </head>
 
 <body>
-    <label for="text_input">Vul hier je vacaturetekst in:</label>
-    <textarea rows="75" cols="100" id="text_input"></textarea>
+    <div class="row">
+        <div class="column">
+            <label for="text_input">Vul hier je vacaturetekst in:</label>
+            <textarea rows="60" id="text_input"></textarea>
+        </div>
+        <div class="column" id="comment_section">
+
+        </div>
+    </div>
+
+
+    <div class="comment_box sample">
+        <p class="comment_box-text"></p>
+    </div>
+
+
 
 
     <script src="bullshitmeter.js"></script>

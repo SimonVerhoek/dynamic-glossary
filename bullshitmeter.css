@@ -1,7 +1,25 @@
+.row {
+  display: flex;
+}
+
+.column {
+  flex: 50%;
+}
+
 label {
     display: block;
 }
 
 textarea {
     display: block;
+    width: 90%;
 }
+
+.comment_box {
+    border: 1px solid black;
+}
+
+.comment_box.sample {
+    display: none;
+}
+
