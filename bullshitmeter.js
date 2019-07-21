@@ -5,8 +5,28 @@ $(function () {
     const text_input = $('#text_input');
     const comment_section = $('#comment_section');
     const comment_box_sample = $('.comment_box.sample');
-    let comments = {};
     let glossary;
+
+    const CommentSection = {
+      html: comment_section,
+      comments: {},
+      update: function () {
+        const _this = this;
+
+        _this.html.empty();
+        $.each(_this.comments, function (term, comment_box) {
+          _this.html.append(comment_box.html)
+        })
+      },
+      addComment: function (term) {
+        this.comments[term] = new CommentBox(term);
+        this.update()
+      },
+      removeComment: function (term) {
+        delete this.comments[term];
+        this.update()
+      }
+    };
 
     function CommentBox(term) {
       this.term = term;
@@ -18,13 +38,6 @@ $(function () {
       };
 
       this.setText()
-    }
-
-    function updateCommentSection() {
-      comment_section.empty();
-      $.each(comments, function (term, comment_box) {
-        comment_section.append(comment_box.html)
-      })
     }
 
     jqxhr.done(function (data) {
@@ -39,13 +52,11 @@ $(function () {
           const term = glossary_terms[i];
 
           if (text.indexOf(term.toLowerCase()) < 0) {
-            delete comments[term]
-          } else if (!comments[term]) {
-            comments[term] = new CommentBox(term);
+            CommentSection.removeComment(term)
+          } else if (!CommentSection.comments[term]) {
+            CommentSection.addComment(term)
           }
         }
-
-        updateCommentSection();
       })
 
     });
