@@ -8,11 +8,22 @@ $(function () {
     let comments = {};
     let glossary;
 
+    function CommentBox(term) {
+      this.term = term;
+      this.description = glossary[term];
+      this.html = comment_box_sample.clone().removeClass('sample');
+
+      this.setText = function () {
+        this.html.children('p').first().text(this.term + ': ' + this.description);
+      };
+
+      this.setText()
+    }
+
     function updateCommentSection() {
       comment_section.empty();
       $.each(comments, function (term, comment_box) {
-        comment_box = comment_box[0];
-        comment_section.append(comment_box)
+        comment_section.append(comment_box.html)
       })
     }
 
@@ -30,11 +41,7 @@ $(function () {
           if (text.indexOf(term.toLowerCase()) < 0) {
             delete comments[term]
           } else if (!comments[term]) {
-            let comment_box = comment_box_sample.clone().removeClass('sample');
-
-            $(comment_box).children('p').first().text(term + ': ' + glossary[term]);
-
-            comments[term] = comment_box;
+            comments[term] = new CommentBox(term);
           }
         }
 
