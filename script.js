@@ -41,7 +41,9 @@ if (page_name === script_page) {
         this.html = comment_box_sample.clone().removeClass('sample');
 
         this.setText = function () {
-          this.html.children('p').first().text(this.term + ': ' + this.description);
+          const elem = this.html.children('p').first();
+          elem.find('span.term').text(this.term);
+          elem.find('span.description').text(this.description);
         };
 
         this.setText()
@@ -53,7 +55,8 @@ if (page_name === script_page) {
         const glossary_terms = Object.keys(glossary);
 
         $(text_input).on('input', function (e) {
-          const text = e.target.value;
+          let text_html = e.target.innerHTML;
+          let text = e.target.innerText;
 
           for (let i = 0; i < glossary_terms.length; i++) {
             const term = glossary_terms[i];
@@ -61,7 +64,13 @@ if (page_name === script_page) {
             if (text.indexOf(term.toLowerCase()) < 0) {
               CommentSection.removeComment(term)
             } else if (!CommentSection.comments[term]) {
-              CommentSection.addComment(term)
+              CommentSection.addComment(term);
+
+              // highlight term and term occurrence in text
+              const highlighted_text = '<span class="highlighted">' + term + '</span>';
+              text_html = text_html.replace(term.toLowerCase(), highlighted_text);
+
+              $(text_input).html(text_html)
             }
           }
         })
