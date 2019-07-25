@@ -1,25 +1,25 @@
-.row {
+#glossary_page .row {
   display: flex;
 }
 
-.column {
+#glossary_page .column {
   flex: 50%;
 }
 
-label {
+#glossary_page label {
     display: block;
 }
 
-textarea {
+#glossary_page textarea#text_input {
     display: block;
     width: 90%;
 }
 
-.comment_box {
+#glossary_page .comment_box {
     border: 1px solid black;
 }
 
-.comment_box.sample {
+#glossary_page .comment_box.sample {
     display: none;
 }
 
