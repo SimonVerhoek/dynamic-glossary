@@ -13,20 +13,23 @@
 </head>
 
 <body>
-    <div id="glossary_page">
-        <div class="row">
-            <div class="column">
-                <label for="text_input">Vul hier je vacaturetekst in:</label>
-                <textarea rows="60" id="text_input"></textarea>
+    <!-- bordered box to replicate WordPress page-->
+    <div style="max-width: 772px; border: 1px solid black; margin: auto;">
+
+        <div id="glossary_page">
+            <div class="text_input">
+                <label for="text_input-area">Vul hier je vacaturetekst in:</label>
+                <textarea rows="60" id="text_input-area"></textarea>
             </div>
-            <div class="column" id="comment_section">
+            <div id="comment_section">
 
             </div>
         </div>
-    </div>
 
-    <div class="comment_box sample">
-        <p class="comment_box-text"></p>
+        <div class="comment_box sample">
+            <p class="comment_box-text"></p>
+        </div>
+
     </div>
 
     <script src="script.js"></script>

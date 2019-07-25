@@ -2,7 +2,7 @@ $(function () {
   const jqxhr = $.getJSON('glossary.json');
 
   $(document).ready(function () {
-    const text_input = $('#text_input');
+    const text_input = $('#text_input-area');
     const comment_section = $('#comment_section');
     const comment_box_sample = $('.comment_box.sample');
     let glossary;
