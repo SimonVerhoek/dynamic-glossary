@@ -1,3 +1,17 @@
+.wp_content {
+    max-width: 772px;
+    border: 1px solid black;
+    margin: auto;
+    font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;
+    font-weight: 400;
+    color: #363b40;
+}
+
+
+/*******************************
+* COPY CODE BELOW TO WORDPRESS *
+********************************/
+
 #glossary_page {
     padding: 20px;
 }
@@ -12,6 +26,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    font-size: 10px;
 }
 
 #glossary_page .comment_box {
@@ -19,6 +34,6 @@
     padding-left: 10px;
 }
 
-#glossary_page .comment_box.sample {
+#glossary_page .comment_box .sample {
     display: none;
 }

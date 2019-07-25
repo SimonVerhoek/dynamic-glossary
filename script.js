@@ -1,64 +1,73 @@
-$(function () {
-  const jqxhr = $.getJSON('glossary.json');
+const page_name = window.location.href.split("/").slice(-1)[0];
+const script_page = '?page_id=2714&preview=true';
 
-  $(document).ready(function () {
-    const text_input = $('#text_input-area');
-    const comment_section = $('#comment_section');
-    const comment_box_sample = $('.comment_box.sample');
-    let glossary;
+if (page_name === script_page) {
+  // do not run script
+} else {
+  $(function () {
+    // const jqxhr = $.getJSON('/wp-content/uploads/2019/07/glossary.json');
+    const jqxhr = $.getJSON('glossary.json');
 
-    const CommentSection = {
-      html: comment_section,
-      comments: {},
-      update: function () {
-        const _this = this;
+    $(document).ready(function () {
+      const text_input = $('#text_input-area');
+      const comment_section = $('#comment_section');
+      const comment_box_sample = $('.comment_box.sample');
+      let glossary;
 
-        _this.html.empty();
-        $.each(_this.comments, function (term, comment_box) {
-          _this.html.append(comment_box.html)
-        })
-      },
-      addComment: function (term) {
-        this.comments[term] = new CommentBox(term);
-        this.update()
-      },
-      removeComment: function (term) {
-        delete this.comments[term];
-        this.update()
-      }
-    };
+      const CommentSection = {
+        html: comment_section,
+        comments: {},
+        update: function () {
+          const _this = this;
 
-    function CommentBox(term) {
-      this.term = term;
-      this.description = glossary[term];
-      this.html = comment_box_sample.clone().removeClass('sample');
-
-      this.setText = function () {
-        this.html.children('p').first().text(this.term + ': ' + this.description);
+          _this.html.empty();
+          $.each(_this.comments, function (term, comment_box) {
+            _this.html.append(comment_box.html)
+          })
+        },
+        addComment: function (term) {
+          this.comments[term] = new CommentBox(term);
+          this.update()
+        },
+        removeComment: function (term) {
+          delete this.comments[term];
+          this.update()
+        }
       };
 
-      this.setText()
-    }
+      function CommentBox(term) {
+        this.term = term;
+        this.description = glossary[term];
+        this.html = comment_box_sample.clone().removeClass('sample');
 
-    jqxhr.done(function (data) {
-      glossary = data.words;
+        this.setText = function () {
+          this.html.children('p').first().text(this.term + ': ' + this.description);
+        };
 
-      const glossary_terms = Object.keys(glossary);
+        this.setText()
+      }
 
-      $(text_input).on('input', function (e) {
-        const text = e.target.value;
+      jqxhr.done(function (data) {
+        glossary = data.words;
 
-        for (let i = 0; i < glossary_terms.length; i++) {
-          const term = glossary_terms[i];
+        const glossary_terms = Object.keys(glossary);
 
-          if (text.indexOf(term.toLowerCase()) < 0) {
-            CommentSection.removeComment(term)
-          } else if (!CommentSection.comments[term]) {
-            CommentSection.addComment(term)
+        $(text_input).on('input', function (e) {
+          const text = e.target.value;
+
+          for (let i = 0; i < glossary_terms.length; i++) {
+            const term = glossary_terms[i];
+
+            if (text.indexOf(term.toLowerCase()) < 0) {
+              CommentSection.removeComment(term)
+            } else if (!CommentSection.comments[term]) {
+              CommentSection.addComment(term)
+            }
           }
-        }
-      })
+        })
 
+      });
     });
   });
-});
+  
+}
