@@ -16,7 +16,7 @@ if (page_name === script_page) {
 
         highlightTerm: function (term, color) {
           const _this = this;
-          const highlighted_text = '<span class="highlighted" style="color: ' + color + ';">' + term + '</span>';
+          const highlighted_text = `<span class="highlighted" style="color: ${color};">${term}</span>`;
           $(_this.elem).html(_this.elem.innerHTML.replace(term, highlighted_text));
         }
       };
@@ -52,13 +52,16 @@ if (page_name === script_page) {
         }
       };
 
-      function CommentBox(term, term_color) {
-        this.term = term;
-        this.term_color = term_color;
-        this.description = glossary[term];
-        this.html = $('.comment_box.sample').clone().removeClass('sample');
+      class CommentBox {
+        constructor(term, term_color) {
+          this.term = term;
+          this.term_color = term_color;
+          this.description = glossary[this.term];
+          this.html = $('.comment_box.sample').clone().removeClass('sample');
+          this.setText();
+        }
 
-        this.setText = function () {
+        setText() {
           const elem = this.html.children('p').first();
           elem.find('span.term')
             .css('color', this.term_color)
@@ -69,14 +72,13 @@ if (page_name === script_page) {
           });
           elem.find('span.description').html(styled_description);
         };
-
-        this.setText()
       }
 
       function getRandomColor() {
-        return "hsl(" + 360 * Math.random() + ',' +
-                 (25 + 70 * Math.random()) + '%,' +
-                 (30 + 10 * Math.random()) + '%)';
+        const hue = 360 * Math.random();
+        const saturation = 25 + 70 * Math.random();
+        const lightness = 30 + 10 * Math.random();
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
       }
 
       function delay(fn, ms) {
