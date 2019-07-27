@@ -16,8 +16,22 @@
     padding: 20px;
 }
 
+#glossary_page .text_input {
+    margin-bottom: 20px;
+}
+
+#glossary_page [contenteditable]:empty:before {
+    content: attr(data-placeholder);
+    color: grey;
+    display: inline-block;
+    font-size: 16px;
+}
+
 #glossary_page label {
     display: block;
+    margin: 0 0 10px;
+    font-size: 1.17em;
+    font-weight: bold;
 }
 
 #glossary_page #text_input-area {
