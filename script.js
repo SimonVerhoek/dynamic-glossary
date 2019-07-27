@@ -17,8 +17,7 @@ if (page_name === script_page) {
         highlightTerm: function (term, color) {
           const _this = this;
           const highlighted_text = '<span class="highlighted" style="color: ' + color + ';">' + term + '</span>';
-          $(_this.elem).html(_this.elem.innerHTML.replace(term, highlighted_text))
-          $(_this.elem).html(_this.elem.innerHTML.replace(term, highlighted_text))
+          $(_this.elem).html(_this.elem.innerHTML.replace(term, highlighted_text));
         }
       };
 
@@ -64,7 +63,11 @@ if (page_name === script_page) {
           elem.find('span.term')
             .css('color', this.term_color)
             .text(this.term);
-          elem.find('span.description').text(this.description);
+
+          const styled_description = this.description.replace(/[0-9]/g, function (char) {
+            return `<strong>${char}</strong>`;
+          });
+          elem.find('span.description').html(styled_description);
         };
 
         this.setText()
