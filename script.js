@@ -9,13 +9,10 @@ if (page_name === script_page) {
     const jqxhr = $.getJSON('glossary.json');
 
     $(document).ready(function () {
-      const text_input = $('#text_input-area')[0];
-      const comment_section = $('#comment_section');
-      const comment_box_sample = $('.comment_box.sample');
       let glossary;
 
       const TextInputField = {
-        elem: text_input,
+        elem: $('#text_input-area')[0],
 
         highlightTerm: function (term, color) {
           const _this = this;
@@ -25,7 +22,7 @@ if (page_name === script_page) {
       };
 
       const CommentSection = {
-        html: comment_section,
+        html: $('#comment_section'),
         comments: {},
 
         sortComments: function () {
@@ -59,7 +56,7 @@ if (page_name === script_page) {
         this.term = term;
         this.term_color = term_color;
         this.description = glossary[term];
-        this.html = comment_box_sample.clone().removeClass('sample');
+        this.html = $('.comment_box.sample').clone().removeClass('sample');
 
         this.setText = function () {
           const elem = this.html.children('p').first();
@@ -91,7 +88,7 @@ if (page_name === script_page) {
 
         const glossary_terms = Object.keys(glossary);
 
-        $(text_input).on('input', delay(function (e) {
+        $(TextInputField.elem).on('input', delay(function (e) {
           let text = e.target.innerText;
 
           for (let i = 0; i < glossary_terms.length; i++) {
