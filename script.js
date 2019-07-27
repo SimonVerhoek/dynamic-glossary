@@ -16,7 +16,8 @@ if (page_name === script_page) {
 
         highlightTerm: function (term, color) {
           const _this = this;
-          const highlighted_text = '<span class="highlighted" style="color: ' + color + ';">' + term.toLowerCase() + '</span>';
+          const highlighted_text = '<span class="highlighted" style="color: ' + color + ';">' + term + '</span>';
+          $(_this.elem).html(_this.elem.innerHTML.replace(term, highlighted_text))
           $(_this.elem).html(_this.elem.innerHTML.replace(term, highlighted_text))
         }
       };
@@ -94,12 +95,13 @@ if (page_name === script_page) {
           for (let i = 0; i < glossary_terms.length; i++) {
             const term = glossary_terms[i];
 
-            if (text.toLowerCase().indexOf(term.toLowerCase()) < 0) {
-              CommentSection.removeComment(term)
-            } else if (!CommentSection.comments[term]) {
+            if (text.indexOf(term) >= 0 || text.indexOf(term.toLowerCase()) >= 0) {
               const color = getRandomColor();
               CommentSection.addComment(term, color);
-              TextInputField.highlightTerm(term, color)
+              TextInputField.highlightTerm(term, color);
+              TextInputField.highlightTerm(term.toLowerCase(), color)
+            } else {
+              CommentSection.removeComment(term)
             }
           }
         }, 500))
