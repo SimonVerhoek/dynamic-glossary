@@ -25,8 +25,8 @@ if (page_name === script_page) {
             _this.html.append(comment_box.html)
           })
         },
-        addComment: function (term) {
-          this.comments[term] = new CommentBox(term);
+        addComment: function (term, term_color) {
+          this.comments[term] = new CommentBox(term, term_color);
           this.update()
         },
         removeComment: function (term) {
@@ -35,18 +35,27 @@ if (page_name === script_page) {
         }
       };
 
-      function CommentBox(term) {
+      function CommentBox(term, term_color) {
         this.term = term;
+        this.term_color = term_color;
         this.description = glossary[term];
         this.html = comment_box_sample.clone().removeClass('sample');
 
         this.setText = function () {
           const elem = this.html.children('p').first();
-          elem.find('span.term').text(this.term);
+          elem.find('span.term')
+            .css('color', this.term_color)
+            .text(this.term);
           elem.find('span.description').text(this.description);
         };
 
         this.setText()
+      }
+
+      function getRandomColor() {
+        return "hsl(" + 360 * Math.random() + ',' +
+                 (25 + 70 * Math.random()) + '%,' +
+                 (30 + 10 * Math.random()) + '%)';
       }
 
       jqxhr.done(function (data) {
@@ -60,17 +69,19 @@ if (page_name === script_page) {
 
           for (let i = 0; i < glossary_terms.length; i++) {
             const term = glossary_terms[i];
+            const term_lowercase = glossary_terms[i].toLowerCase();
 
-            if (text.indexOf(term.toLowerCase()) < 0) {
+            if (text.toLowerCase().indexOf(term_lowercase) < 0) {
               CommentSection.removeComment(term)
-            } else if (!CommentSection.comments[term]) {
-              CommentSection.addComment(term);
-
+            } else {
               // highlight term and term occurrence in text
-              const highlighted_text = '<span class="highlighted">' + term + '</span>';
-              text_html = text_html.replace(term.toLowerCase(), highlighted_text);
+              const color = getRandomColor();
+              CommentSection.addComment(term, color);
 
-              $(text_input).html(text_html)
+              const highlighted_text = '<span style="color: ' + color + '; font-weight: bold; font-size: 16px;">' + term_lowercase + '</span>';
+              text_html = text_html.replace(term, highlighted_text);
+
+              text_input.html(text_html)
             }
           }
         })
@@ -78,5 +89,5 @@ if (page_name === script_page) {
       });
     });
   });
-  
+
 }
