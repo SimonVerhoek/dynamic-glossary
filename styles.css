@@ -40,7 +40,8 @@
 }
 
 #glossary_page .highlighted {
-    background-color: yellow;
+    font-weight: bold;
+    font-size: 16px;
 }
 
 #glossary_page .term {

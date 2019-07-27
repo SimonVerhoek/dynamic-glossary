@@ -9,21 +9,41 @@ if (page_name === script_page) {
     const jqxhr = $.getJSON('glossary.json');
 
     $(document).ready(function () {
-      const text_input = $('#text_input-area');
+      const text_input = $('#text_input-area')[0];
       const comment_section = $('#comment_section');
       const comment_box_sample = $('.comment_box.sample');
       let glossary;
 
+      const TextInputField = {
+        elem: text_input,
+
+        highlightTerm: function (term, color) {
+          const _this = this;
+          const highlighted_text = '<span class="highlighted" style="color: ' + color + ';">' + term.toLowerCase() + '</span>';
+          $(_this.elem).html(_this.elem.innerHTML.replace(term, highlighted_text))
+        }
+      };
+
       const CommentSection = {
         html: comment_section,
         comments: {},
+
+        sortComments: function () {
+          const _this = this;
+          let ordered_comments = {};
+          Object.keys(_this.comments).sort().forEach(function(key) {
+            ordered_comments[key] = _this.comments[key];
+          });
+          _this.comments = ordered_comments;
+        },
         update: function () {
           const _this = this;
+          _this.sortComments();
 
           _this.html.empty();
           $.each(_this.comments, function (term, comment_box) {
             _this.html.append(comment_box.html)
-          })
+          });
         },
         addComment: function (term, term_color) {
           this.comments[term] = new CommentBox(term, term_color);
@@ -58,33 +78,34 @@ if (page_name === script_page) {
                  (30 + 10 * Math.random()) + '%)';
       }
 
+      function delay(fn, ms) {
+        let timer = 0;
+        return function(...args) {
+          clearTimeout(timer);
+          timer = setTimeout(fn.bind(this, ...args), ms || 0)
+        }
+      }
+
       jqxhr.done(function (data) {
         glossary = data.words;
 
         const glossary_terms = Object.keys(glossary);
 
-        $(text_input).on('input', function (e) {
-          let text_html = e.target.innerHTML;
+        $(text_input).on('input', delay(function (e) {
           let text = e.target.innerText;
 
           for (let i = 0; i < glossary_terms.length; i++) {
             const term = glossary_terms[i];
-            const term_lowercase = glossary_terms[i].toLowerCase();
 
-            if (text.toLowerCase().indexOf(term_lowercase) < 0) {
+            if (text.toLowerCase().indexOf(term.toLowerCase()) < 0) {
               CommentSection.removeComment(term)
-            } else {
-              // highlight term and term occurrence in text
+            } else if (!CommentSection.comments[term]) {
               const color = getRandomColor();
               CommentSection.addComment(term, color);
-
-              const highlighted_text = '<span style="color: ' + color + '; font-weight: bold; font-size: 16px;">' + term_lowercase + '</span>';
-              text_html = text_html.replace(term, highlighted_text);
-
-              text_input.html(text_html)
+              TextInputField.highlightTerm(term, color)
             }
           }
-        })
+        }, 500))
 
       });
     });
