@@ -1,15 +1,20 @@
 const page_name = window.location.href.split("/").slice(-1)[0];
 const script_page = '?page_id=2714&preview=true';
 
-if (page_name === script_page) {
+if (page_name !== script_page) {
   // do not run script
 } else {
   $(function () {
-    // const jqxhr = $.getJSON('/wp-content/uploads/2019/07/glossary.json');
-    const jqxhr = $.getJSON('glossary.json');
+    const spreadsheet_id = 'your_spreadsheet_id';
+    const jqxhr = $.ajax({
+      url: `https://docs.google.com/spreadsheets/d/e/${spreadsheet_id}/pub?gid=0&single=true&output=tsv`,
+      type: 'GET',
+      dataType: 'text',
+      mimeType: 'text/plain',
+    });
 
     $(document).ready(function () {
-      let glossary;
+      const glossary = {};
 
       const TextInputField = {
         elem: $('#text_input-area')[0],
@@ -98,7 +103,12 @@ if (page_name === script_page) {
       }
 
       jqxhr.done(function (data) {
-        glossary = data.words;
+
+        const lines = data.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+          const [term, description] = lines[i].split('\t');
+          glossary[term] = description
+        }
 
         const glossary_terms = Object.keys(glossary);
 
