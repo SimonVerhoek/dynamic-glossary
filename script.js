@@ -28,7 +28,7 @@ if (page_name === script_page) {
         sortComments: function () {
           const _this = this;
           let ordered_comments = {};
-          Object.keys(_this.comments).sort().forEach(function(key) {
+          Object.keys(_this.comments).sort().forEach(function (key) {
             ordered_comments[key] = _this.comments[key];
           });
           _this.comments = ordered_comments;
@@ -74,16 +74,24 @@ if (page_name === script_page) {
         };
       }
 
-      function getRandomColor() {
-        const hue = 360 * Math.random();
-        const saturation = 25 + 70 * Math.random();
-        const lightness = 30 + 10 * Math.random();
-        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      function getRandomColor(i = null) {
+        if (i === null) {
+          const hue = 360 * Math.random();
+          const saturation = 25 + 70 * Math.random();
+          const lightness = 30 + 10 * Math.random();
+          return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        } else {
+          const colors = [
+            '#ffa6bf', '#ff3e89', '#ea8d8d', '#eec120', '#ffc700', '#ff66c4', '#ff914d', '#a6a6a6',
+            '#3efff3', '#5ce1e6'
+          ];
+          return colors[i];
+        }
       }
 
       function delay(fn, ms) {
         let timer = 0;
-        return function(...args) {
+        return function (...args) {
           clearTimeout(timer);
           timer = setTimeout(fn.bind(this, ...args), ms || 0)
         }
@@ -96,12 +104,14 @@ if (page_name === script_page) {
 
         $(TextInputField.elem).on('input', delay(function (e) {
           let text = e.target.innerText;
+          let comment_color_number = 0;
 
           for (let i = 0; i < glossary_terms.length; i++) {
             const term = glossary_terms[i];
 
             if (text.indexOf(term) >= 0 || text.indexOf(term.toLowerCase()) >= 0) {
-              const color = getRandomColor();
+              comment_color_number += 1;
+              const color = getRandomColor(comment_color_number);
               CommentSection.addComment(term, color);
               TextInputField.highlightTerm(term, color);
               TextInputField.highlightTerm(term.toLowerCase(), color)
